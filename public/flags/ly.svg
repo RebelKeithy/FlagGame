@@ -1,0 +1,13 @@
+<svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="48" height="6" x="0" y="0" fill="#e70013"/>
+    <rect class="flag-component" width="48" height="12" x="0" y="6" fill="#000000"/>
+    <rect class="flag-component" width="48" height="6" x="0" y="18" fill="#239e46"/>
+    <polygon class="flag-component" points="25.85,12.00 27.09,11.57 27.12,10.25 27.92,11.30 29.18,10.92 28.43,12.00 29.18,13.08 27.92,12.70 27.12,13.75 27.09,12.43" fill="#ffffff"/>
+    <defs>
+        <mask id="moon-mask-0">
+            <circle cx="24.0" cy="12.0" r="3.0" fill="white"/>
+            <circle cx="24.6" cy="12.0" r="2.6" fill="black"/>
+        </mask>
+    </defs>
+    <circle class="flag-component" cx="24.0" cy="12.0" r="3.0" fill="#ffffff" mask="url(#moon-mask-0)"/>
+</svg>

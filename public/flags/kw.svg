@@ -1,0 +1,6 @@
+<svg viewBox="0 0 12 6" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="12" height="2" x="0" y="0" fill="#007a3d"/>
+    <rect class="flag-component" width="12" height="2" x="0" y="2" fill="#ffffff"/>
+    <rect class="flag-component" width="12" height="2" x="0" y="4" fill="#ce1126"/>
+    <polygon class="flag-component" points="0,0 3,2 3,4 0,6" fill="#000000"/>
+</svg>

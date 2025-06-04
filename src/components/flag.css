@@ -1,0 +1,30 @@
+
+.flag-container {
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+svg {
+    display: block;
+}
+
+.flag-component:hover {
+    /*stroke-width: 4px;*/
+    /*vector-effect: non-scaling-stroke;*/
+    /*stroke: #1a1a1a;*/
+    fill-opacity: 0.5;
+}
+
+circle:hover {
+    stroke-width: 0.01rem;
+    stroke: #1a1a1a;
+    fill-opacity: 0.5;
+}
+
+polygon:hover {
+    stroke-width: 0.01rem;
+    stroke: #1a1a1a;
+    fill-opacity: 0.5;
+}

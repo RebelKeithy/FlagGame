@@ -1,0 +1,5 @@
+<svg viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="9" height="2" fill="#EF3340"/>
+    <rect class="flag-component" y="2" width="9" height="2" fill="#FFFFFF"/>
+    <rect class="flag-component" y="4" width="9" height="2" fill="#EF3340"/>
+</svg>

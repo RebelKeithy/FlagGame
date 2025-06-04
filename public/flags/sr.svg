@@ -1,0 +1,8 @@
+<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="30" height="4" x="0" y="0" fill="#007a33"/>
+    <rect class="flag-component" width="30" height="2" x="0" y="4" fill="#ffffff"/>
+    <rect class="flag-component" width="30" height="8" x="0" y="6" fill="#c8102e"/>
+    <rect class="flag-component" width="30" height="2" x="0" y="14" fill="#ffffff"/>
+    <rect class="flag-component" width="30" height="4" x="0" y="16" fill="#007a33"/>
+    <polygon class="flag-component" points="15.00,6.38 15.94,9.09 18.80,9.15 16.52,10.88 17.35,13.62 15.00,11.98 12.65,13.62 13.48,10.88 11.20,9.15 14.06,9.09" fill="#ffcd00"/>
+</svg>

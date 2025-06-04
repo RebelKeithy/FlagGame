@@ -1,0 +1,14 @@
+<svg viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" id="3" width="100%" height="2" fill="#0D5EAF"/>
+    <rect class="flag-component" id="2" y="2" width="100%" height="2" fill="#FFF"/>
+    <rect class="flag-component" id="3" y="4" width="100%" height="2" fill="#0D5EAF"/>
+    <rect class="flag-component" id="2" y="6" width="100%" height="2" fill="#FFF"/>
+    <rect class="flag-component" id="3" y="8" width="100%" height="2" fill="#0D5EAF"/>
+    <rect class="flag-component" id="2" y="10" width="100%" height="2" fill="#FFF"/>
+    <rect class="flag-component" id="3" y="12" width="100%" height="2" fill="#0D5EAF"/>
+    <rect class="flag-component" id="2" y="14" width="100%" height="2" fill="#FFF"/>
+    <rect class="flag-component" id="3" y="16" width="100%" height="2" fill="#0D5EAF"/>
+    <rect class="flag-component" width="10" height="10" fill="#0D5EAF"/>
+    <rect class="flag-component" id="1" y="4" width="10" height="2" fill="#FFF"/>
+    <rect class="flag-component" id="1" x="4" width="2" height="10" fill="#FFF"/>
+</svg>

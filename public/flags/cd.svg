@@ -1,0 +1,5 @@
+<svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+    <polygon class="flag-component" points="0,0 2,0 0,2" fill="#009543"/>
+    <polygon class="flag-component" points="3,0 3,2 1,2" fill="#DC241F"/>
+    <polygon class="flag-component" points="2,0 3,0 1,2 0,2" fill="#FBDE4A"/>
+</svg>

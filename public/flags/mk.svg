@@ -1,0 +1,18 @@
+<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="280" height="140" x="0" y="0" fill="#d82126"/>
+    <defs>
+        <mask id="mask-0">
+            <rect width="100%" height="100%" fill="white"/>
+            <circle cx="140" cy="70" r="25.0" fill="black"/>
+        </mask>
+    </defs>
+    <polygon class="flag-component" id="1" points="126,0 154,0 140,60" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="126,140 154,140 140,60" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="0,0 42,0 140,65 140,70" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="280,0 238,0 140,65 140,70" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="0,140 42,140 140,75 140,70" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="280,140 238,140 140,75 140,70" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="0,56 140,70 0,84" fill="#f8e92e" mask="url(#mask-0)"/>
+    <polygon class="flag-component" id="1" points="280,56 140,70 280,84" fill="#f8e92e" mask="url(#mask-0)"/>
+    <circle class="flag-component" cx="140" cy="70" r="20" fill="#f8e92e"/>
+</svg>

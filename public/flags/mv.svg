@@ -1,0 +1,11 @@
+<svg viewBox="0 0 72 48" xmlns="http://www.w3.org/2000/svg">
+    <rect class="flag-component" width="72" height="48" x="0" y="0" fill="#c8102e"/>
+    <rect class="flag-component" width="48" height="24" x="12" y="12" fill="#00843d"/>
+    <defs>
+        <mask id="moon-mask-0">
+            <circle cx="39.0" cy="24.0" r="8.0" fill="white"/>
+            <circle cx="42.0" cy="24.0" r="8.0" fill="black"/>
+        </mask>
+    </defs>
+    <circle class="flag-component" cx="39.0" cy="24.0" r="8.0" fill="#ffffff" mask="url(#moon-mask-0)"/>
+</svg>

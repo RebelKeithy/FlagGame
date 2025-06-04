@@ -1,0 +1,1 @@
+ls ./public/flags/*.svg | sed 's|.*/||' | sed 's|\.svg$||' | jq -R -s -c 'split("\n")[:-1]'
