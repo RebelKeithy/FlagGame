@@ -1,12 +1,52 @@
-# React + Vite
+# Flag Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive flag colouring app built with [React](https://react.dev/) and [Vite](https://vitejs.dev/). It allows you to pick a country, choose a colour, and apply it to different parts of the flag SVG.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Choose from a list of countries and display its flag
+- Click individual shapes in the flag to change their colour
+- Predefined colour picker for quick selection
+- Flags stored as SVGs under `public/flags`
+- Tools to generate new flag templates
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   Then open the printed local URL in your browser.
+
+To build a production bundle run:
+```bash
+npm run build
+```
+You can preview the production build with:
+```bash
+npm run preview
+```
+Lint the project with:
+```bash
+npm run lint
+```
+
+## Generating Flags
+
+Flags are standard SVGs placed in the `public/flags` directory. A flexible generator script is included:
+
+```bash
+python3 create_flag.py COUNTRY_NAME -x WIDTH -y HEIGHT [options]
+```
+
+The script accepts many options such as `--vertical`, `--horizontal`, `--circle`, `--cross`, `--star`, `--moon` and more. Generated files are written to `public/flags` by default. See `create_flag.py --help` for the full list of arguments and examples.
+
+The helper script `generate_flag_array.sh` prints a JSON array of the available country codes based on the files in `public/flags`.
+
+## License
+
+This project is provided as-is under the MIT license.
