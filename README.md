@@ -43,7 +43,7 @@ Flags are standard SVGs placed in the `public/flags` directory. A flexible gener
 python3 create_flag.py COUNTRY_NAME -x WIDTH -y HEIGHT [options]
 ```
 
-The script accepts many options such as `--vertical`, `--horizontal`, `--circle`, `--cross`, `--star`, `--moon` and more. Generated files are written to `public/flags` by default. See `create_flag.py --help` for the full list of arguments and examples.
+The script accepts many options such as `--vertical`, `--horizontal`, `--circle`, `--cross`, `--star`, `--moon`, `--rect` and `--triangle`. Generated files are written to `public/flags` by default. See `create_flag.py --help` for the full list of arguments and examples.
 
 The helper script `generate_flag_array.sh` prints a JSON array of the available country codes based on the files in `public/flags`.
 

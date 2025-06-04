@@ -3,7 +3,8 @@
 SVG Flag Template Generator
 
 A modular and extensible script for generating SVG flag templates with various
-geometric elements like bars, crosses, circles, stars, moons, and side features.
+geometric elements like bars, crosses, circles, stars, moons, rectangles,
+triangles and side features.
 """
 
 import argparse
@@ -510,6 +511,59 @@ class Moon(FlagElement):
         return None
 
 
+@dataclass
+class Rect(FlagElement):
+    """Simple rectangle element"""
+    x: int
+    y: int
+    width: int
+    height: int
+
+    def render(self, color_manager: ColorManager) -> List[str]:
+        color = color_manager.get_next_color()
+        return [
+            f'    <rect class="flag-component" x="{self.x}" y="{self.y}" '
+            f'width="{self.width}" height="{self.height}" fill="{color}"/>'
+        ]
+
+    def describe(self) -> str:
+        return f"rect {self.width}x{self.height} at ({self.x},{self.y})"
+
+    def validate(self, dimensions: FlagDimensions) -> Optional[str]:
+        if self.width < 1 or self.height < 1:
+            return "Rectangle width and height must be >= 1"
+        if not (0 <= self.x < dimensions.width and 0 <= self.y < dimensions.height):
+            return "Rectangle origin must be within SVG bounds"
+        if self.x + self.width > dimensions.width or self.y + self.height > dimensions.height:
+            return "Rectangle exceeds flag bounds"
+        return None
+
+
+@dataclass
+class Triangle(FlagElement):
+    """Triangle element defined by three points"""
+    x1: int
+    y1: int
+    x2: int
+    y2: int
+    x3: int
+    y3: int
+
+    def render(self, color_manager: ColorManager) -> List[str]:
+        color = color_manager.get_next_color()
+        points = f"{self.x1},{self.y1} {self.x2},{self.y2} {self.x3},{self.y3}"
+        return [f'    <polygon class="flag-component" points="{points}" fill="{color}"/>']
+
+    def describe(self) -> str:
+        return f"triangle ({self.x1},{self.y1})-({self.x2},{self.y2})-({self.x3},{self.y3})"
+
+    def validate(self, dimensions: FlagDimensions) -> Optional[str]:
+        for x, y in [(self.x1, self.y1), (self.x2, self.y2), (self.x3, self.y3)]:
+            if not (0 <= x <= dimensions.width and 0 <= y <= dimensions.height):
+                return "Triangle points must be within SVG bounds"
+        return None
+
+
 class ElementCollection:
     """Manages multiple elements of the same type"""
 
@@ -541,7 +595,18 @@ class FlagGenerator:
     """Main flag generator class"""
 
     # Element rendering order (background first, then overlays)
-    RENDER_ORDER = ['background', 'bars', 'sides', 'canton', 'crosses', 'circles', 'stars', 'moons']
+    RENDER_ORDER = [
+        'background',
+        'bars',
+        'sides',
+        'canton',
+        'crosses',
+        'circles',
+        'rects',
+        'triangles',
+        'stars',
+        'moons'
+    ]
 
     def __init__(self, dimensions: FlagDimensions, colors: Optional[List[str]] = None):
         self.dimensions = dimensions
@@ -583,6 +648,18 @@ class FlagGenerator:
         circles = [Circle(x, y, r) for x, y, r in circles_data]
         self.elements['circles'] = ElementCollection('circle', circles)
         self.descriptions.append(self.elements['circles'].describe())
+
+    def add_rects(self, rects_data: List[Tuple[int, int, int, int]]):
+        """Add one or more rectangles"""
+        rects = [Rect(x, y, w, h) for x, y, w, h in rects_data]
+        self.elements['rects'] = ElementCollection('rect', rects)
+        self.descriptions.append(self.elements['rects'].describe())
+
+    def add_triangles(self, triangles_data: List[Tuple[int, int, int, int, int, int]]):
+        """Add one or more triangles"""
+        triangles = [Triangle(x1, y1, x2, y2, x3, y3) for x1, y1, x2, y2, x3, y3 in triangles_data]
+        self.elements['triangles'] = ElementCollection('triangle', triangles)
+        self.descriptions.append(self.elements['triangles'].describe())
 
     def add_stars(self, stars_data: List[Tuple[float, float, float, float]]):
         """Add one or more stars"""
@@ -669,6 +746,8 @@ def create_parser() -> argparse.ArgumentParser:
   %(prog)s sudan -x 30 -y 20 --side 15 0 left -c blue yellow black red  # Left triangle (Sudan style)
   %(prog)s kuwait -x 30 -y 20 --side 8 10 left -c green white red black  # Left trapezoid (Kuwait style)
   %(prog)s complex -x 40 -y 30 --star 10 10 4 0 --moon 30 20 5 2 -2 -c navy white yellow  # Star and moon
+  %(prog)s rectdemo -x 20 -y 15 --rect 5 5 10 5 -c white red  # Add a rectangle
+  %(prog)s tridemo -x 20 -y 15 --triangle 0 0 10 15 20 0 -c blue white yellow  # Add a triangle
         '''
     )
 
@@ -701,6 +780,12 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('--moon', action='append', nargs=6, type=float,
                        metavar=('CENTER_X', 'CENTER_Y', 'RADIUS', 'MASK_DX', 'MASK_DY', 'MASK_RADIUS'),
                        help='Create a crescent moon (center_x center_y radius mask_dx mask_dy mask_radius). Can be used multiple times.')
+    parser.add_argument('--rect', action='append', nargs=4, type=int,
+                       metavar=('X', 'Y', 'WIDTH', 'HEIGHT'),
+                       help='Create a rectangle (x y width height). Can be used multiple times.')
+    parser.add_argument('--triangle', action='append', nargs=6, type=int,
+                       metavar=('X1', 'Y1', 'X2', 'Y2', 'X3', 'Y3'),
+                       help='Create a triangle using three points. Can be used multiple times.')
     parser.add_argument('-c', '--colors', nargs='+', metavar='COLOR',
                        help='Specify colors (hex codes, 3/6 digits, or named colors)')
     parser.add_argument('-o', '--output', help='Output directory (default: ./public/flags/)')
@@ -777,6 +862,18 @@ def main():
                 print(f"Error: Invalid side arguments: {e}", file=sys.stderr)
                 return 1
 
+    # Parse rectangle arguments if provided
+    rects_data = []
+    if args.rect:
+        for rect_args in args.rect:
+            rects_data.append(tuple(rect_args))
+
+    # Parse triangle arguments if provided
+    triangles_data = []
+    if args.triangle:
+        for tri_args in args.triangle:
+            triangles_data.append(tuple(tri_args))
+
     # Get country code
     country_code = get_country_code(args.country)
     if not country_code:
@@ -788,7 +885,10 @@ def main():
     generator = FlagGenerator(dimensions, colors)
 
     # Check if we need a background (when using overlays)
-    needs_background = bool(args.cross or args.circle or args.star or args.moon or sides_data or args.canton)
+    needs_background = bool(
+        args.cross or args.circle or args.star or args.moon or
+        rects_data or triangles_data or sides_data or args.canton
+    )
 
     # Add elements
     if args.vertical:
@@ -805,6 +905,12 @@ def main():
     # Add side features
     if sides_data:
         generator.add_sides(sides_data)
+
+    if rects_data:
+        generator.add_rects(rects_data)
+
+    if triangles_data:
+        generator.add_triangles(triangles_data)
 
     # Add canton
     if args.canton:
