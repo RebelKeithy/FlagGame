@@ -435,7 +435,8 @@ class Circle(FlagElement):
 
 @dataclass
 class Star(FlagElement):
-    """5-pointed star element"""
+    """Star element with configurable number of points"""
+    points: int
     center_x: float
     center_y: float
     radius: float
@@ -445,9 +446,10 @@ class Star(FlagElement):
         points = []
         inner_radius = self.radius * 0.4
 
-        for i in range(10):
+        step = 360 / (self.points * 2)
+        for i in range(self.points * 2):
             current_radius = self.radius if i % 2 == 0 else inner_radius
-            point_angle = math.radians(self.angle + i * 36 - 90)
+            point_angle = math.radians(self.angle + i * step - 90)
 
             x = self.center_x + current_radius * math.cos(point_angle)
             y = self.center_y + current_radius * math.sin(point_angle)
@@ -458,9 +460,14 @@ class Star(FlagElement):
         return [f'    <polygon class="flag-component" points="{points_str}" fill="{color}"/>']
 
     def describe(self) -> str:
-        return f"star at ({self.center_x},{self.center_y}) radius {self.radius} angle {self.angle}°"
+        return (
+            f"{self.points}-point star at ({self.center_x},{self.center_y}) "
+            f"radius {self.radius} angle {self.angle}°"
+        )
 
     def validate(self, dimensions: FlagDimensions) -> Optional[str]:
+        if self.points < 3:
+            return "Star must have at least 3 points"
         if self.radius < 1:
             return "Star radius must be >= 1"
         if not (0 <= self.center_x < dimensions.width and 0 <= self.center_y < dimensions.height):
@@ -661,9 +668,9 @@ class FlagGenerator:
         self.elements['triangles'] = ElementCollection('triangle', triangles)
         self.descriptions.append(self.elements['triangles'].describe())
 
-    def add_stars(self, stars_data: List[Tuple[float, float, float, float]]):
+    def add_stars(self, stars_data: List[Tuple[int, float, float, float, float]]):
         """Add one or more stars"""
-        stars = [Star(x, y, r, a) for x, y, r, a in stars_data]
+        stars = [Star(int(p), x, y, r, a) for p, x, y, r, a in stars_data]
         self.elements['stars'] = ElementCollection('star', stars)
         self.descriptions.append(self.elements['stars'].describe())
 
@@ -737,7 +744,7 @@ def create_parser() -> argparse.ArgumentParser:
   %(prog)s colombia -x 30 -y 18 --horizontal "9,6,3" -c yellow blue red  # Colombia with custom heights
   %(prog)s custom -x 24 -y 16 --vertical "8,6,10" -c red white blue  # Custom vertical bar widths
   %(prog)s italy -x 30 -y 20 --vertical 3 -c green white red  # Italian flag colors
-  %(prog)s usa -x 30 -y 20 --horizontal 13 --canton 12 7 --star 6 3 2 0 -c red white blue white  # US-style flag
+  %(prog)s usa -x 30 -y 20 --horizontal 13 --canton 12 7 --star 5 6 3 2 0 -c red white blue white  # US-style flag
   %(prog)s malaysia -x 28 -y 14 --horizontal 14 --canton 14 7 -c red white blue  # Malaysia-style flag
   %(prog)s england -x 30 -y 20 --cross 15 10 6 -c white red  # White background, red cross
   %(prog)s japan -x 30 -y 20 --circle 15 10 8 -c white red   # White background, red circle
@@ -745,7 +752,7 @@ def create_parser() -> argparse.ArgumentParser:
   %(prog)s madagascar -x 30 -y 20 --side 10 20 left -c white red green  # Left bar (Madagascar style)
   %(prog)s sudan -x 30 -y 20 --side 15 0 left -c blue yellow black red  # Left triangle (Sudan style)
   %(prog)s kuwait -x 30 -y 20 --side 8 10 left -c green white red black  # Left trapezoid (Kuwait style)
-  %(prog)s complex -x 40 -y 30 --star 10 10 4 0 --moon 30 20 5 2 -2 -c navy white yellow  # Star and moon
+  %(prog)s complex -x 40 -y 30 --star 5 10 10 4 0 --moon 30 20 5 2 -2 -c navy white yellow  # Star and moon
   %(prog)s rectdemo -x 20 -y 15 --rect 5 5 10 5 -c white red  # Add a rectangle
   %(prog)s tridemo -x 20 -y 15 --triangle 0 0 10 15 20 0 -c blue white yellow  # Add a triangle
         '''
@@ -774,9 +781,9 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('--circle', action='append', nargs=3, type=int,
                        metavar=('CENTER_X', 'CENTER_Y', 'RADIUS'),
                        help='Create a circle (center_x center_y radius). Can be used multiple times.')
-    parser.add_argument('--star', action='append', nargs=4, type=float,
-                       metavar=('CENTER_X', 'CENTER_Y', 'RADIUS', 'ANGLE'),
-                       help='Create a 5-pointed star (center_x center_y radius angle_degrees). Can be used multiple times.')
+    parser.add_argument('--star', action='append', nargs=5, type=float,
+                       metavar=('POINTS', 'CENTER_X', 'CENTER_Y', 'RADIUS', 'ANGLE'),
+                       help='Create a star (points center_x center_y radius angle_degrees). Can be used multiple times.')
     parser.add_argument('--moon', action='append', nargs=6, type=float,
                        metavar=('CENTER_X', 'CENTER_Y', 'RADIUS', 'MASK_DX', 'MASK_DY', 'MASK_RADIUS'),
                        help='Create a crescent moon (center_x center_y radius mask_dx mask_dy mask_radius). Can be used multiple times.')
